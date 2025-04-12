@@ -7,23 +7,27 @@ require_once "config.php";
 $logged_in_user_id = $_SESSION['user_id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve the form data
-    $title = htmlspecialchars(trim($_POST['title']));
-    $content = htmlspecialchars(trim($_POST['content']));
-
-    // Insert the new word into the database
-    $sql = "INSERT INTO Dictionary (user_id, title, content) 
-            VALUES (?, ?, ?)";
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "iss", $logged_in_user_id, $title, $content);
-
-    if (mysqli_stmt_execute($stmt)) {
-        echo "<p>Word added successfully!</p>";
-    } else {
-        echo "<p>Error: Could not add the word.</p>";
+    if ($_POST['action'] === 'add_entry') {
+        // Retrieve the form data
+        $title = htmlspecialchars(trim($_POST['title']));
+        $content = htmlspecialchars(trim($_POST['content']));
+    
+        // Insert the new word into the database
+        $sql = "INSERT INTO Dictionary (user_id, title, content) 
+                VALUES (?, ?, ?)";
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "iss", $logged_in_user_id, $title, $content);
+    
+        if (mysqli_stmt_execute($stmt)) {
+            echo "<p>Word added successfully!</p>";
+        } else {
+            echo "<p>Error: Could not add the word.</p>";
+        }
+    
+        mysqli_stmt_close($stmt);
+    } elseif ($_POST['action'] === 'edit_entry') {
+        
     }
-
-    mysqli_stmt_close($stmt);
 }
 
 // Fetch words created by or viewable to the user
@@ -233,6 +237,7 @@ mysqli_stmt_bind_result($stmt, $dictionary_id, $title, $content, $access_level);
         <div class="popup-content">
             <h2>Add Word</h2>
             <form id="addEntryForm" method="post">
+                <input type="hidden" name="action" value="add_entry">
                 <table>
                     <tr>
                         <td><label for="title">Word:</label></td>
@@ -260,15 +265,26 @@ mysqli_stmt_bind_result($stmt, $dictionary_id, $title, $content, $access_level);
     <div id="editWordPopup" class="popup">
         <div class="popup-content">
             <h2>Edit Word</h2>
-            <form action="edit_word.php" method="post" onsubmit="validatePasswords()">
+            <form action="edit_entry.php" method="post">
+                <input type="hidden" name="action" value="edit_entry">
                 <table>
                     <tr>
-                        <td><label for="word">Word:</label></td>
-                        <td><input type="text" id="word" name="word" required></td>
+                        <td><label for="id">ID:</label></td>
+                        <td><input type="hidden" name="id" value="<?php echo htmlspecialchars($entry['id']); ?>"></td>
                     </tr>
                     <tr>
-                        <td><label for="meaning">Meaning:</label></td>
-                        <td><input type="meaning" id="email" name="meaning" required></td>
+                        <td><label for="title">Word:</label></td>
+                        <td><input type="text" name="title" id="title" value="<?php echo htmlspecialchars($entry['title'])?>" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="translate">Translation:</label></td>
+                        <td><input type="text" name="translate" id="translate" value="<?php echo htmlspecialchars($entry['translate'])?>" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="content">Meaning:</label></td>
+                        <td>
+                            <textarea name="content" id="content" required><?php echo htmlspecialchars($entry['translate'])?></textarea>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: center;">
