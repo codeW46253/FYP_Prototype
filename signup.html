@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('fuji.png') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+        .box {
+            border: 2px solid #000;
+            padding: 20px;
+            max-width: 400px;
+            margin: 50px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.9); /* Add a semi-transparent background for readability */
+        }
+        .box h2 {
+            text-align: center;
+        }
+        .box p {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        // Check for the error query parameter and display it in an alert
+        window.onload = function () {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('error')) {
+                alert(params.get('error'));
+            }
+        };
+    </script>  
+</head>
+<body>
+    <div class="box">
+        <h2>Sign Up</h2>
+        <form action="signup.php" method="POST">
+            <table>
+                <tr>
+                    <td><label for="username">Username:</label></td>
+                    <td><input type="text" id="username" name="username" required></td>
+                </tr>
+                <tr>
+                    <td><label for="email">Email:</label></td>
+                    <td><input type="email" id="email" name="email" required></td>
+                </tr>
+                <tr>
+                    <td><label for="password">Password:</label></td>
+                    <td><input type="password" id="password" name="password" required></td>
+                </tr>
+                <tr>
+                    <td><label for="confirm-password">Confirm Password:</label></td>
+                    <td><input type="password" id="confirm-password" name="confirm_password" required></td>
+                </tr>
+                <tr>
+                    <td><label for="show-password">Show Password:</label></td>
+                    <td>
+                        <input type="checkbox" id="show-password" onclick="togglePasswordVisibility()" style="margin-left: 0;">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="submit" style="width: 100%;">Sign Up</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <p>Already have an account? <a href="login.html">Login here</a></p>
+    </div>
+    <script>
+        function togglePasswordVisibility() {
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirm-password');
+            const type = password.type === 'password' ? 'text' : 'password';
+            password.type = type;
+            confirmPassword.type = type;
+        }
+    </script>
+</body>
+</html>

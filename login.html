@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('fuji.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .form-container {
+            border: 2px solid #000;
+            padding: 20px;
+            width: 300px;
+            margin: 50px auto;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            opacity: 0.75; /* 25% transparent */
+        }
+        .form-container form {
+            text-align: center;
+        }
+        .form-container button {
+            display: block;
+            margin: 10px auto;
+        }
+    </style>
+    <script>
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById('password');
+            passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
+        }
+
+        // Check for the error query parameter and display it in an alert
+        window.onload = function () {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('error')) {
+                alert(params.get('error'));
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="form-container" style="background-color: #f2f2f2;">
+        <h1 style="text-align: center;">Login</h1>
+        <form action="login.php" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <br><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <br>
+            <input type="checkbox" id="show-password" onclick="togglePasswordVisibility()">
+            <label for="show-password">Show Password</label>
+            <br><br>
+            <button type="submit">Login</button>
+        </form>
+        <p style="text-align: center; margin-top: 10px;">Don't have an account? <a href="signup.html">Sign up here</a>.</p>
+    </div>
+</body>
+</html>
